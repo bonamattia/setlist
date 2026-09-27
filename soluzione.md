@@ -2,7 +2,7 @@
 titolo: "Soluzione — design end-to-end"
 tags: [soluzione, design, architettura]
 stato: bozza
-ultimo_aggiornamento: 2026-09-25
+ultimo_aggiornamento: 2026-09-27
 ---
 
 # Soluzione — design end-to-end
@@ -20,10 +20,9 @@ Per ogni scelta c'è un riferimento a [[decisioni]] con una riga di motivazione.
 
 ## Schema d'insieme
 
-_(diagramma end-to-end — embed dell'Excalidraw in `assets/`, es. `![[assets/architettura-e2e.excalidraw]]`._
-_Parti dallo scheletro `assets/_schema-logico.excalidraw`; per lo standard vedi [[creazione-diagrammi]].)_
+_(diagramma end-to-end da fare quando esistono più `SOL-x`; per ora il design copre solo il riconoscimento del genere.)_
 
-Sintesi in una riga: _(cosa fa la soluzione, dall'input all'output)_
+Sintesi in una riga: da una richiesta testuale a una scaletta ordinata, passando per analisi dei brani (genere, intensità), ricerca per suono e ordinamento con vincoli — oggi progettato solo il primo mattone, il genere.
 
 ## Componenti e flussi (`SOL-x`)
 
@@ -33,32 +32,34 @@ una scatola o una sequenza.
 
 | ID | Elemento | Tipo | Ruolo | Requisiti coperti | Decisione |
 |---|---|---|---|---|---|
-| SOL-1 | _(nome)_ | componente | _(a cosa serve)_ | [[requisiti#REQ-01]] | [[decisioni#DEC-01]] |
-| SOL-2 | | | | | |
+| SOL-1 | Riconoscimento genere | flusso | Assegna a ogni brano i sottogeneri Discogs, per finestra e sul brano intero | [[requisiti#Requisiti\|REQ-04]] | [[decisioni#DEC-03]] · [[decisioni#DEC-04]] |
 
 Un `SOL-x` senza **Requisiti coperti** è un segnale: o manca un requisito, o stiamo costruendo
 qualcosa che nessuno ha chiesto.
 
-### SOL-… · _(nome flusso, es. ingestione dati)_
+### SOL-1 · Riconoscimento genere
 
-_(passi principali, una riga a passo — max 6; se sono di più, è più di un flusso)_
+1. Carica il brano in mono a 16 kHz.
+2. Estrattore EffNet → un embedding per finestra (salvati per riuso).
+3. Testa genre400 → 400 probabilità per finestra.
+4. Media sul brano → primi 5 stili (csv).
+5. Mappa di calore dei 6–8 stili principali nel tempo, grezza e lisciata (png).
+6. Confronto con l'annotazione dell'utente: primo posto, primi tre, errori.
 
-### SOL-… · _(nome flusso, es. query / retrieval)_
-
-_(passi principali)_
+Fonte del disegno: [[prova-C01-discogs-effnet]].
 
 ## Dettaglio tecnico
 
 Un blocco per ogni `SOL-x` con scelte **non banali** — non per tutti. Campi fissi, max 3 righe
 l'uno ([[CLAUDE]] §4): ciò che sfora va in una pagina di approfondimento linkata.
 
-### SOL-… · _(nome)_ — dettaglio
+### SOL-1 · Riconoscimento genere — dettaglio
 
-- **Stack**: _(tecnologie e versioni, con link alla doc ufficiale)_
-- **Interfacce**: _(input/output, schema dati, contratti con gli altri `SOL-x`)_
-- **Logica chiave**: _(prompt, algoritmo, pattern — es. routing condizionale in LangGraph)_
-- **Limiti noti**: _(cosa non fa, dove si rompe, cosa costa)_
-- **Codice**: _(link al repo / path, se esiste)_
+- **Stack**: Essentia (`essentia-tensorflow`) in WSL; modelli `discogs-effnet-bs64-1` e `genre_discogs400-discogs-effnet-1` (https://essentia.upf.edu/models.html).
+- **Interfacce**: in: file audio in `data/riferimento/` + annotazione (sottogenere atteso, secondo accettabile). Out: `C01-predizioni.csv`, `C01-<brano>-stili-nel-tempo.png`, embedding (1.280 valori per finestra).
+- **Logica chiave**: uscite sigmoide indipendenti → si leggono i primi stili, non un vincitore; media sul brano più curva nel tempo; lisciatura con media mobile su poche finestre.
+- **Limiti noti**: PR-AUC dichiarata 0,21; etichette Discogs assegnate all'uscita discografica, non al brano; durata e sovrapposizione delle finestre (~1,5 s) da verificare.
+- **Codice**: `code/prove/c01_discogs_effnet.py` (da creare).
 
 ## Valutazione
 
@@ -67,14 +68,15 @@ Come si misura che la soluzione **funziona**. È qui che si verificano le ipotes
 
 | Cosa si misura | Metrica | Dataset / metodo | Soglia | Risultato | Verifica |
 |---|---|---|---|---|---|
-| _(es. qualità risposte)_ | _(es. faithfulness)_ | _(es. 50 domande annotate a mano)_ | _(≥ 0.8)_ | _(da misurare)_ | [[requisiti#ASS-01]] |
+| Riconoscimento del sottogenere | stile atteso nei primi 3 (e al primo posto) | 8–10 brani di riferimento annotati dall'utente | da fissare ([[decisioni#Punti aperti\|DOM-05]]) | da misurare | [[requisiti#Ipotesi\|ASS-01]] |
 
 ## Scelte tecniche
 
 Ogni scelta rimanda alla decisione che la motiva (con stato e alternative) in [[decisioni]].
 
-- _(area, es. storage)_ → riferimento: _(tecnologia)_ · vedi [[decisioni#DEC-…]]
-- _(area, es. orchestrazione)_ → riferimento: _(tecnologia)_ · vedi [[decisioni#DEC-…]]
+- modello per il genere → riferimento: Discogs-EffNet + genre_discogs400 · vedi [[decisioni#DEC-03]]
+- lettura dell'output → riferimento: mappa di calore nel tempo + media · vedi [[decisioni#DEC-04]]
+- ambiente di esecuzione → riferimento: Essentia in WSL sul PC dell'utente · vedi [[decisioni#DEC-06]]
 
 ## Punti aperti
 
