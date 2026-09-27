@@ -1,0 +1,36 @@
+# --- Obsidian: ignora stato/UI locale, tieni la config dei plugin ---
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/graph.json
+.trash/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Excalidraw export temporanei ---
+*.excalidraw.svg
+*.excalidraw.png
+
+# --- Dati, audio e modelli: mai nel repo (diritti e licenze) ---
+data/*
+!data/README.md
+models/*
+!models/README.md
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.m4a
+*.pb
+*.onnx
+
+# --- Python ---
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/

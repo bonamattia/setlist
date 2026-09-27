@@ -1,0 +1,6 @@
+# Setlist — dipendenze (Linux/WSL: essentia-tensorflow non ha wheel per Windows nativo)
+essentia-tensorflow
+numpy
+pandas
+matplotlib
+librosa
