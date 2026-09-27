@@ -33,6 +33,7 @@ Runbook richiamabili a parola-chiave. **Trigger e descrizioni in [[CLAUDE]] §8*
 - [[setlist-first-ideas]] — prime idee (v0.1): Setlist come DJ set, obiettivo di carriera, aree di studio.
 - [[setlist-riorientamento-macroaree]] — riorientamento: metal/rock strumentale, scaletta live, macroaree A–G e sequenza degli step.
 - [[prova-A01-mtg-jamendo-conteggi]] — prova A-01: conteggi di metal/rock in MTG-Jamendo (cartella in `raw/output/`).
+- [[prova-C01-discogs-effnet]] — prova C-01 (bozza di design): genere e sottogenere con Discogs-EffNet, mappa di calore degli stili nel tempo.
 
 ## Codice e dati
 - `code/` — officina: pacchetto, script delle prove, test (fuori dall'indice di Obsidian).

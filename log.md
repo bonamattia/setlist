@@ -75,3 +75,5 @@ Ultimi 5 eventi: `grep "^## \[" log.md | tail -5`.
 ## [2026-09-27] build | raw/ diviso in input/ (1 file: setlist-first-ideas) e output/ (2 file: riorientamento-macroaree, prova-A01); aggiornati raw/README, index; nota N-06 in evolutive.
 
 ## [2026-09-27] build | vault → repo pubblico: CLAUDE §2 compilato, §3 albero (code/, data/, models/, cartelle-prova), §4 +3 righe ownership; README riscritto in inglese; .gitignore/.gitattributes; scheletro code/; prova A-01 in cartella; N-04 e N-07 applicate.
+
+## [2026-09-27] design | prova C01 (bozza): disegno genere/sottogenere con Discogs-EffNet, mappa di calore stili nel tempo, verifica top-1/top-3, 4 decisioni aperte.
