@@ -74,7 +74,7 @@ paralizza; la linea di taglio è questa:
 - **Perché lo faccio**: capire l'AI musicale mettendoci le mani, su metal e rock strumentale — da una richiesta in linguaggio naturale a una scaletta con un arco di intensità.
 - **Pubblico del case study**: ingegneri e recruiter tecnici del music tech
 - **Lingua del case study**: en (anche il `README.md` del repo; il resto del vault resta in italiano)
-- **Repo**: pubblico su GitHub — `<link, da collegare>`
+- **Repo**: pubblico su GitHub — https://github.com/bonamattia/setlist
 - **Dove gira il codice**: sul PC dell'utente (WSL), sviluppo con Claude Code in VS Code
 
 ## 3. Struttura del vault
